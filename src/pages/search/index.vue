@@ -85,7 +85,6 @@ export default {
   },
   onPageScroll() {
     this.isScroll = true;
-    console.log(this.isScroll);
   },
   methods: {
     queryHandler(keyword) {

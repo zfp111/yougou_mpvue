@@ -98,7 +98,6 @@ export default {
     async queryGoods() {
       let cart = wx.getStorageSync("cart") || {};
       let gids = Object.getOwnPropertyNames(cart);
-      console.log(gids);
       let goodsList = await this.$request({
         url: `/api/public/v1/goods/goodslist?goods_ids=${gids}`
       });
