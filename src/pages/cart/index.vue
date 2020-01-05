@@ -7,7 +7,11 @@
     <!-- 商品列表 -->
     <ul class="goods-list">
       <li class="goods-item" v-for="item in goodsList" :key="item.goods_id">
-        <span class="iconfont icon-check"></span>
+        <span
+          class="iconfont"
+          :class="item.checked ? 'icon-check' : 'icon-uncheck'"
+          @click="item.checked = !item.checked"
+        ></span>
         <img :src="item.goods_small_logo" alt="" />
         <div class="right">
           <p class="lainghang">{{ item.goods_name }}</p>
@@ -17,25 +21,30 @@
               >.00</span
             >
             <div class="goods-num">
-              <button>-</button>
+              <button @click="item.num--" :disabled="item.num === 1">-</button>
               <span>{{ item.num }}</span>
-              <button>+</button>
+              <button @click="item.num++">+</button>
             </div>
           </div>
         </div>
       </li>
     </ul>
     <div class="account">
-      <div class="select-all">
-        <span class="iconfont icon-uncheck"></span>
+      <div class="select-all" @click="isAll = !isAll">
+        <span
+          class="iconfont"
+          :class="isAll ? 'icon-check' : 'icon-uncheck'"
+        ></span>
         <span>全选</span>
       </div>
 
       <div class="price">
-        <p>合计:<span class="num">￥1000.00</span></p>
+        <p>
+          合计:<span class="num">￥{{ totalPrice }}</span>
+        </p>
         <p class="info">包含运费</p>
       </div>
-      <div class="account-btn">结算(1000)</div>
+      <div class="account-btn">结算({{ totalNum }})</div>
     </div>
   </div>
 </template>
@@ -49,6 +58,42 @@ export default {
   onShow() {
     this.queryGoods();
   },
+  onHide() {
+    let cart = {};
+    this.goodsList.forEach(v => {
+      cart[v.goods_id] = {
+        num: v.num,
+        checked: v.checked
+      };
+    });
+    // 存
+    wx.setStorageSync("cart", cart);
+  },
+  computed: {
+    isAll: {
+      get() {
+        return this.goodsList.every(v => {
+          return v.checked;
+        });
+      },
+      set(status) {
+        this.goodsList.forEach(v => {
+          v.checked = status;
+        });
+      }
+    },
+    totalNum() {
+      return this.goodsList.reduce((sum, v) => {
+        return sum + (v.checked ? v.num : 0);
+      }, 0);
+    },
+    totalPrice() {
+      // 所有被选中商品的数量*价格的和
+      return this.goodsList.reduce((sum, v) => {
+        return sum + (v.checked ? v.num * v.goods_price : 0);
+      }, 0);
+    }
+  },
   methods: {
     queryGoods() {
       let cart = wx.getStorageSync("cart") || {};
@@ -57,10 +102,15 @@ export default {
       wx.request({
         url: `https://www.uinav.com/api/public/v1/goods/goodslist?goods_ids=${gids}`, //开发者服务器接口地址",
         success: res => {
-          console.log(res);
+          let sahngpin = res.data.message;
+          sahngpin.forEach(v => {
+            v.num = cart[v.goods_id].num;
+            v.checked = cart[v.goods_id].checked;
+          });
           this.goodsList = res.data.message;
         }
       });
+      // 合并数据源
     }
   }
 };
