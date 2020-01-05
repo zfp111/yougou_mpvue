@@ -6,19 +6,19 @@
     </div>
     <!-- 商品列表 -->
     <ul class="goods-list">
-      <li class="goods-item">
-        <span class="iconfont icon-checked"></span>
-        <img
-          src="https://api.zbztb.cn/full/2fb113b32f7a2b161f5ee4096c319afedc3fd5a1.jpg"
-          alt=""
-        />
+      <li class="goods-item" v-for="item in goodsList" :key="item.goods_id">
+        <span class="iconfont icon-check"></span>
+        <img :src="item.goods_small_logo" alt="" />
         <div class="right">
-          <p class="line-clamp2">xx</p>
+          <p class="lainghang">{{ item.goods_name }}</p>
           <div class="btm">
-            <span class="price">￥<span>100</span>.00</span>
+            <span class="price"
+              >￥<span>{{ item.goods_price }}</span
+              >.00</span
+            >
             <div class="goods-num">
               <button>-</button>
-              <span>10</span>
+              <span>{{ item.num }}</span>
               <button>+</button>
             </div>
           </div>
@@ -27,7 +27,7 @@
     </ul>
     <div class="account">
       <div class="select-all">
-        <span class="iconfont icon-checked"></span>
+        <span class="iconfont icon-uncheck"></span>
         <span>全选</span>
       </div>
 
@@ -43,18 +43,33 @@
 export default {
   data() {
     return {
-      goodsid: null
+      goodsList: []
     };
   },
-  onLoad(options) {
-    let ids = options.goods_ids;
-    console.log(ids);
+  onShow() {
+    this.queryGoods();
   },
-  onShow() {}
+  methods: {
+    queryGoods() {
+      let cart = wx.getStorageSync("cart") || {};
+      let gids = Object.getOwnPropertyNames(cart);
+      console.log(gids);
+      wx.request({
+        url: `https://www.uinav.com/api/public/v1/goods/goodslist?goods_ids=${gids}`, //开发者服务器接口地址",
+        success: res => {
+          console.log(res);
+          this.goodsList = res.data.message;
+        }
+      });
+    }
+  }
 };
 </script>
 
 <style lang="less">
+.iconfont {
+  font-size: 44rpx;
+}
 .title {
   height: 88rpx;
   display: flex;

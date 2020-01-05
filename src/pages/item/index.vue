@@ -92,7 +92,7 @@ export default {
   methods: {
     // 跳转购物车页面
     toCart(ids) {
-      wx.switchTab({ url: `/pages/cart/main?goods_ids=${ids}` });
+      wx.switchTab({ url: `/pages/cart/main` });
     },
     add2Cart() {
       let cart = wx.getStorageSync("cart") || {};
