@@ -65,23 +65,26 @@ export default {
   },
   onLoad(options) {
     this.keyWord = options.keyword;
-    this.getGoods();
+    this.reload();
     this.pagenum = 1;
     this.isRequest = false;
   },
   // 下拉刷新
   onPullDownRefresh() {
     // this.pagenum = 1;
+    this.isScroll = false;
     this.reload();
-    this.isScroll = true;
+    // this.isScroll = true;
   },
   // 上拉加载更多
   onReachBottom() {
-    this.pagenum++;
+    if (!this.isLastPage) {
+      this.pagenum++;
+    }
     this.getGoods();
   },
   onPageScroll() {
-    this.isScroll = false;
+    this.isScroll = true;
     console.log(this.isScroll);
   },
   methods: {
@@ -91,6 +94,8 @@ export default {
     },
     reload() {
       this.pagenum = 1;
+      this.isLastPage = false;
+      this.isRequest = false;
       this.goodsLists = [];
       this.getGoods();
     },
@@ -101,7 +106,7 @@ export default {
       // 发请求前，isRequest置为true
       this.isRequest = true;
       wx.request({
-        url: "https://api.zbztb.cn/api/public/v1/goods/search",
+        url: "https://ugo.botue.com/api/public/v1/goods/search",
         data: {
           query: this.keyWord,
           pagenum: this.pagenum,
