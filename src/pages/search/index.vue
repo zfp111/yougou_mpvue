@@ -99,31 +99,25 @@ export default {
       this.goodsLists = [];
       this.getGoods();
     },
-    getGoods() {
+    async getGoods() {
       if (this.isRequest || this.isLastPage) {
         return;
       }
       // 发请求前，isRequest置为true
       this.isRequest = true;
-      wx.request({
-        url: "https://ugo.botue.com/api/public/v1/goods/search",
+      let data = await this.$request({
+        url: "/api/public/v1/goods/search",
         data: {
           query: this.keyWord,
           pagenum: this.pagenum,
           pagesize: PAGE_SIZE
-        },
-        success: res => {
-          if (res.data.meta.status === 200) {
-            this.goodsLists = [...this.goodsLists, ...res.data.message.goods];
-            if (this.goodsLists.length === res.data.message.total) {
-              this.isLastPage = true;
-            }
-          }
-        },
-        complete: () => {
-          this.isRequest = false;
         }
       });
+      this.isRequest = false;
+      this.goodsLists = [...this.goodsLists, ...data.goods];
+      if (this.goodsLists.length === data.total) {
+        this.isLastPage = true;
+      }
     },
     toItem(goodsId) {
       wx.navigateTo({

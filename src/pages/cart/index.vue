@@ -95,22 +95,20 @@ export default {
     }
   },
   methods: {
-    queryGoods() {
+    async queryGoods() {
       let cart = wx.getStorageSync("cart") || {};
       let gids = Object.getOwnPropertyNames(cart);
       console.log(gids);
-      wx.request({
-        url: `https://www.uinav.com/api/public/v1/goods/goodslist?goods_ids=${gids}`, //开发者服务器接口地址",
-        success: res => {
-          let sahngpin = res.data.message;
-          sahngpin.forEach(v => {
-            v.num = cart[v.goods_id].num;
-            v.checked = cart[v.goods_id].checked;
-          });
-          this.goodsList = res.data.message;
-        }
+      let goodsList = await this.$request({
+        url: `/api/public/v1/goods/goodslist?goods_ids=${gids}`
       });
       // 合并数据源
+      goodsList.forEach(v => {
+        v.num = cart[v.goods_id].num;
+        v.checked = cart[v.goods_id].checked;
+      });
+
+      this.goodsList = goodsList;
     }
   }
 };

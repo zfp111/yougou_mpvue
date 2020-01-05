@@ -62,13 +62,15 @@ export default {
   },
   methods: {
     async getCategories() {
-      this.categories = await this.$request("/api/public/v1/categories");
+      this.categories = await this.$request({
+        url: "/api/public/v1/categories"
+      });
       this.isInit = true;
     },
     toSearch(name) {
       wx.navigateTo({
-        url: '/pages/search/main?keyword='+ name
-      })
+        url: "/pages/search/main?keyword=" + name
+      });
     }
   }
 };

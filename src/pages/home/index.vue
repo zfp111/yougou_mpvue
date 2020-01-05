@@ -70,13 +70,19 @@ export default {
   },
   methods: {
     async getSwiper() {
-      this.swiperdata = await this.$request("/api/public/v1/home/swiperdata");
+      this.swiperdata = await this.$request({
+        url: "/api/public/v1/home/swiperdata"
+      });
     },
     async getCatitems() {
-      this.catitems = await this.$request("/api/public/v1/home/catitems");
+      this.catitems = await this.$request({
+        url: "/api/public/v1/home/catitems"
+      });
     },
     async getFloordata() {
-      this.floordata = await this.$request("/api/public/v1/home/floordata");
+      this.floordata = await this.$request({
+        url: "/api/public/v1/home/floordata"
+      });
     }
   }
 };

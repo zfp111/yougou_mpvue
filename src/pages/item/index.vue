@@ -115,15 +115,11 @@ export default {
         urls
       });
     },
-    queryGoodsDetail(goodsId) {
-      wx.request({
-        url: "https://api.zbztb.cn/api/public/v1/goods/detail", //开发者服务器接口地址",
+    async queryGoodsDetail(goodsId) {
+      this.goods = await this.$request({
+        url: "/api/public/v1/goods/detail",
         data: {
           goods_id: goodsId
-        },
-        success: res => {
-          console.log(res);
-          this.goods = res.data.message;
         }
       });
     }
