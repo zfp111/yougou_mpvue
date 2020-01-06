@@ -126,7 +126,6 @@ export default {
     margin: 6rpx 12rpx 0 32rpx;
   }
 }
-
 .goods-item {
   height: 206rpx;
   background-color: #fff;

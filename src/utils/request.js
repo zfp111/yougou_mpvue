@@ -1,6 +1,7 @@
 // const BASE_URL = 'https://api.zbztb.cn'
-const BASE_URL = 'https://ugo.botue.com'
+// const BASE_URL = 'https://ugo.botue.com'
 // const BASE_URL = 'https://api.zbztb.cn'
+const BASE_URL = 'https://www.uinav.com'
 
 function request (options) {
   return new Promise((resolve, reject) => {
@@ -14,6 +15,7 @@ function request (options) {
     wx.request({
       url: BASE_URL + options.url,
       data: options.data || {},
+      method: options.method || "GET",
       success: res => {
         let {
           meta,

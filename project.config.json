@@ -58,17 +58,10 @@
 					"scene": null
 				},
 				{
-					"id": 1,
-					"name": "搜索列表",
-					"pathName": "pages/search/main",
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/login/main",
 					"query": "keyword=华为",
-					"scene": null
-				},
-				{
-					"id": 2,
-					"name": "商品详情",
-					"pathName": "pages/item/main",
-					"query": "goodsid =56473",
 					"scene": null
 				}
 			]
