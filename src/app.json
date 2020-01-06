@@ -5,6 +5,7 @@
     "pages/category/main",
     "pages/searchpage/main",
     "pages/item/main",
+    "pages/pay/main",
     "pages/login/main",
     "pages/cart/main",
     "pages/mine/main"

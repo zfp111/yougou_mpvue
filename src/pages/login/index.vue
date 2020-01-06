@@ -25,6 +25,8 @@ export default {
                   signature: userinfo.signature
                 }
               });
+              wx.setStorageSync("token", data.token);
+              wx.navigateBack();
             }
           });
         }

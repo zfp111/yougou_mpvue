@@ -21,7 +21,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx658f68e6e59d9c99",
+	"appid": "wx38d8faffac4d34d2",
 	"projectname": "yougou_mpvue",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
@@ -62,6 +62,13 @@
 					"name": "登录",
 					"pathName": "pages/login/main",
 					"query": "keyword=华为",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品详情",
+					"pathName": "pages/item/main",
+					"query": "goodsid=50567",
 					"scene": null
 				}
 			]

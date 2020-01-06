@@ -44,7 +44,7 @@
         </p>
         <p class="info">包含运费</p>
       </div>
-      <div class="account-btn">结算({{ totalNum }})</div>
+      <div class="account-btn" @click="toPay">结算({{ totalNum }})</div>
     </div>
   </div>
 </template>
@@ -57,6 +57,10 @@ export default {
   },
   onShow() {
     this.queryGoods();
+    wx.setTabBarBadge({
+      index: 2,
+      text: Object.keys(wx.getStorageSync("cart")).length + ""
+    });
   },
   onHide() {
     let cart = {};
@@ -66,7 +70,7 @@ export default {
         checked: v.checked
       };
     });
-    // 存
+    // 存  wx38d8faffac4d34d2
     wx.setStorageSync("cart", cart);
   },
   computed: {
@@ -95,6 +99,21 @@ export default {
     }
   },
   methods: {
+    toPay() {
+      if (!this.totalNum) {
+        wx.showToast({
+          title: "商品不能为空", //提示的内容,
+          icon: none //图标,
+        });
+        return;
+      }
+      let token = wx.getStorageSync("token");
+      if (!token) {
+        wx.navigateTo({ url: "/pages/login/main" });
+        // return;
+      }
+      wx.navigateTo({ url: "/pages/pay/main" });
+    },
     async queryGoods() {
       let cart = wx.getStorageSync("cart") || {};
       let gids = Object.getOwnPropertyNames(cart);

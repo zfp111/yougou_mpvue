@@ -62,6 +62,9 @@
       </div>
       <div class="icon-text" @click="toCart(goods.goods_id)">
         <span class="iconfont icon-cart"></span>
+        <!-- <input class="tips" type="button" v-model="goodsNum" /> -->
+        <div class="tips">{{ goodsNum }}</div>
+        <!-- <input class="tips" type="button" value="5"> -->
         <span>购物车</span>
       </div>
       <div class="btn add-cart-btn" @click="add2Cart">加入购物车</div>
@@ -75,8 +78,14 @@ export default {
     return {
       // 商品详情
       goods: {},
-      activeIndex: 0
+      activeIndex: 0,
+      goodsNum: Object.keys(wx.getStorageSync("cart")).length + ""
     };
+  },
+  watch: {
+    'Object.keys(wx.getStorageSync("cart")).length + ""': val => {
+      this.goodsNum = val;
+    }
   },
   onLoad(options) {
     let goodsId = options.goodsid;
@@ -285,5 +294,17 @@ export default {
       background-color: #ff2d4a;
     }
   }
+}
+.icon-text > .tips {
+  position: absolute;
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  background-color: #ff2644;
+  color: #fff;
+  text-align: center;
+  line-height: 30rpx;
+  right: 20rpx;
+  top: 5rpx;
 }
 </style>
